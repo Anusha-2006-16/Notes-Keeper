@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit your notes...</title>
+    <link rel="stylesheet" href="/editnotes.css">
+</head>
+<body>
+   <h2>Edit your Notes Here...</h2>
+   <form action="/notes/<%= user._id %>/<%= note._id %>?_method=PUT" method="POST">
+    <label for="title">Title: </label>
+    <input type="text" name="title" value="<%= note.title %>">
+    <br>
+    <label for="content">Content: </label>
+    <input type="content" name="content" value="<%= note.content %>">
+    <br>
+    <input type="submit" value="Edit Notes">
+</form> 
+</body>
+</html>

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User-Notes-Page</title>
+    <link rel="stylesheet" href="/userpage.css">
+</head>
+<body>
+     <h1>Hey <%= user.name %>! Create Your Notes Here...</h1>
+
+     <div class="form">
+        <form action="/notes/<%= user._id %>" method="POST">
+            <label for="title">Title:</label>       
+            <input type="text" name="title" placeholder="Enter Title">
+            <br>
+            <label for="content">Content</label>
+            <input type="text" name="content" placeholder="Enter Content">
+            <br>
+            <input type="submit" value="Add Notes">
+        </form>
+     </div>
+<hr>
+<div class="notes">
+    <% if(notes.length <0) {%>
+        <h2>No Notes Added Yet!!!</h2>
+    <% } else {%>
+        <h1 style="text-align: center;">Your Notes</h1>
+        <a href="/notes/<%= user._id %>/view">View all notes</a>
+        <div class="container">
+            <% for(let note of notes) {%>
+                <div class="note">
+                    <h2><b>Title:<%= note.title %></b></h2>
+                    <h3>
+  <%= note.content.split(" ").slice(0,20).join(" ") %>
+  <% if(note.content.split(" ").length > 20) { %>
+      ... <a href="/notes/<%= user._id %>/<%= note._id %>/viewNote">Read more</a>
+  <% } %>
+</h3>
+
+                    <form action="/notes/<%= user._id %>/<%= note._id %>/edit" method="GET">
+                        <button type="submit">Edit</button>
+                    </form>
+                    <form action="/notes/<%= user._id %>/<%= note._id %>/pin" method="POST">
+                        <button type="submit">
+                            <% if(note.pinned.includes(user._id)) {%>
+                            📍 Unpin
+                            <% } else{%>
+                                📌 Pin
+                            <% } %>
+                        </button>
+                    </form>
+                    <form action="/notes/<%= user._id %>/<%=note._id %>/?_method=DELETE" method="POST">
+                        <button type="submit">Delete</button>
+                    </form>
+                </div>
+             <% } %>   
+        </div>
+    <% } %>
+</div>
+</body>
+</html>

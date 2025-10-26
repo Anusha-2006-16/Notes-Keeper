@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="/viewnotes.css">
+</head>
+<body>
+    <h1>Here are your notes <%= user.name %>...</h1>&nbsp;    <a href="/notes/<%= user._id %>">Go Back to Create Notes</a>
+
+    <div class="search">
+        <form action="/notes/<%= user._id %>/viewSearch" method="GET">
+            <input type="text" name="title" placeholder="Search By Title...">
+            <button type="submit">Search</button>
+            <a href="/notes/<%= user._id %>/view">Show All Notes</a>
+        </form>
+    </div>
+
+    <div class="notesList">
+        <% for(let note of notes) {%>
+             <div class="<%= note.pinned.includes(user._id) ? 'note-pinned' : '' %>">
+    <h3>Title: <%= note.title %></h3>
+    <h4>Content: 
+        <%= note.content.split(" ").slice(0,20).join(" ") %>
+        <% if(note.content.split(" ").length > 20) {%>
+               ... <a href="/notes/<%= user._id %>/<%= note._id %>/viewNote">Read more</a>
+        <% } %>
+    </h4>
+
+    <form action="/notes/<%= user._id %>/<%= note._id %>/edit" method="GET">
+        <button type="submit">Edit</button>
+    </form>
+
+    <form action="/notes/<%= user._id %>/<%= note._id %>/pin/view" method="POST">
+        <button type="submit">
+            <% if(note.pinned.includes(user._id)) { %>
+                📍 Unpin
+            <% } else { %>
+                📌 Pin
+            <% } %>
+        </button>
+    </form>
+
+    <form action="/notes/<%= user._id %>/<%= note._id %>/?_method=DELETE" method="POST">
+        <button type="submit">Delete</button>
+    </form>
+    <hr>
+</div>
+
+        <% } %>
+
+    </div>
+ 
+</body>
+</html>
